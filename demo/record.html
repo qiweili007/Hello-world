@@ -1,0 +1,1742 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>中国移动党建管理平台</title>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="renderer" content="webkit|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="lib/easy-ui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="lib/easy-ui/themes/icon.css">
+<!--[if IE 9]>
+  <script src='/assets/lib/ueditor-1.4.3.2/ueditor.config.js'></script>
+  <script src='/assets/lib/ueditor-1.4.3.2/ueditor.all.min.js'></script>
+  <script src='/assets/lib/ueditor-1.4.3.2/lang/zh-cn/zh-cn.js'></script>
+  <![endif]-->
+<!--[if lte IE 8]>
+  <script type="text/javascript">
+	  //window.onerror = function () { debugger; alert(1) }
+    function getIe2WorkObject() {
+      if (window.__ie2work_activex_object) {
+        return window.__ie2work_activex_object;
+      }
+      try {
+        var ie2work = window.__ie2work_activex_object = new ActiveXObject("Dangjian.Ie2Work");
+
+        return ie2work;
+      }
+      catch (e) {
+        return null;
+      }
+    }
+    function IeChecker() {
+      //WinXP ie8 :"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727)"
+      //win7  ie9 : "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
+      //Win10 ie11: "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; Tablet PC 2.0; rv:11.0) like Gecko"
+
+      function ieVersion() {
+        var ua = navigator.userAgent;
+        var reg = /MSIE (\d+(\.\d+))/;
+        var r = reg.exec(ua);
+        if (r == null) return -1;
+        return parseFloat(r[1]);
+      }
+
+      function isNetClr2Installed() {
+        var ua = navigator.userAgent;
+        var reg = /\.NET\s+CLR\s+2\.0/i;
+        return reg.test(ua);
+      }
+
+      function getOsVersion() {
+        var ua = navigator.userAgent;
+        var reg = /Windows\s+NT\s+(\d+(\.\d+))/;
+        var r = reg.exec(ua);
+        if (r == null) return -1;
+        return r[1];
+      }
+
+
+      function isWinXp() {
+        return getOsVersion() == "5.1";
+      }
+
+      function isWin7() {
+        return getOsVersion() == "6.1";
+      }
+
+      return {
+        ieVersion: ieVersion,
+        isWin7: isWin7,
+        isWinXp: isWinXp,
+        isNetClr2Installed: isNetClr2Installed
+      }
+    }
+
+    function tryGoWorkApp() {
+      var ie2work = getIe2WorkObject();
+      if (ie2work == null) {
+        $(function () {
+          $('#info').text("您没有安装党建插件，请下载安装。请同时确保您已经安装Chrome浏览器！");
+          $('#helperIe8').show();
+        })
+      }
+      else {
+        var currProcessName = ie2work.CurrentProcessName || '';
+
+        if (currProcessName.toLowerCase() == "iexplore") {
+          //检查是否安装chrome
+          if (!ie2work.IsChromeInstalled) {
+             $('#info').text("您没有安装Chrome浏览器，请下载安装");
+             $('#helperIe8').show();
+
+          }
+          else {
+            $('#info').text("正在验证身份.....");
+            $.getScript(domainConfig.domainLoginAPI + "login/sso/work", function () {
+              var urlToken = encodeURIComponent(work).replace(/\./g, '$');
+              ie2work.LoginToWork(document.location.href + "ssologin/" + urlToken);
+               $('#info').text("正在进入系统.....");
+              setTimeout(function() {
+                window.opener = null;
+                window.open('', '_self', '');
+                window.close();
+              }, 5000);
+              
+            }).fail(function () {
+              alert('身份认证出错，请重新登陆');
+            });
+          }
+
+
+        }
+        else {
+          //其他双核浏览器？
+          alert("请切换为急速模式");
+        }
+      }
+    }
+
+  </script>
+  <![endif]-->
+    	<style>
+
+
+
+			.table1{
+border-top: 1px solid black;
+   border-right: 0;
+   border-bottom: 1px solid black;
+}
+.m2fm_tabBox .table1 tr{
+   border-left: 1px solid black;
+}
+
+th{
+  border-left: 0;
+  border-right: 0;
+}
+.m2fm_tabBox .table1 td{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+.div2{
+	display: inline;
+}
+ #form_letter1 input{
+	 font-size:18px;
+ }
+
+ input {
+	 border-width: 1px;
+ }
+</style>
+</head>
+<body class="">
+
+	<div id="root">
+		<div style="width:100%;" >
+			<div >
+				<div class="topBg" >
+					<div class="wrapper" >
+						<a href="javascript:;" class="topOut" >退出登录</a><a
+							href="/users/jbxx?userName=0345656" class="topOut topPerson"
+							style="display:none;"> 个人中心</a><a
+							href="" class="top_btn">进入党建云平台</a><span class="topWelcom"><span>欢迎你，</span><span class="topPnm">吕幼敏</span></span>
+					</div>
+				</div>
+			 <div id="headerContent" class="header"></div>
+				<div class="nav" >
+					<ul >
+						<li ><a class="nav_a" href="/"
+							>首 页</a></li>
+						<li ><a class="nav_a"
+							href="/activities?orgID=12792,13257,13258,13259,13265,13278,13289"
+							>党委工作</a></li>
+						<li ><a class="nav_a"
+							href="/activities?orgID=13291" >总支工作</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/orgs" >组织管理</a></li>
+						<li data-reactid=".0.0.2.0.5"><a class="nav_a"
+							href="/activities?orgID=2663" >组织生活</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/partymembers" >党员管理</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/members" >党员发展</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/paymanage/notice"
+							>党费管理</a></li>
+						<li style="display:;" ><a
+							class="nav_a on" href="/orgtransfer" >组织转接</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/messages" >通知下发</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/meetings" >会议管理</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/tasks" >任务管理</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/analysis" >数据统计</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/search" >综合查询</a></li>
+						<li ><a class="nav_a"
+							href="/users/jbxx?userName=0345656" >个人中心</a></li>
+					</ul>
+				</div>
+				<div class="main2" >
+					<div class="m2pos" >
+						<a class="m2pos_a" href="/" >首页</a><span
+							>&gt;</span><a class="m2pos_a"
+							href="javascript:;" >组织转接</a><span
+							>&gt;</span><span class="m2pos_cut"
+							>审批记录</span>
+					</div>
+					<!-- <iframe src="relation_out.html" frameborder="0" width='100%' height="800"></iframe> -->
+
+<!--第一个iframe开始-->
+					<div class="m2fmNav" >
+						<ul >
+							<li><a
+								class="m2fm_a1" href="relations_out.html"
+								>组织关系转出</a></li>
+							<li><a class="m2fm_a1 m2fm_a3"
+								href="record.html" >审批记录</a></li>
+						</ul>
+					</div>
+					<div class="mb10">
+						<div class="layer_t">待办业务</div>
+                		<div class="m2nad_sbLi" style="padding:0 0 0 0px;">
+       						<!-- <a id="approval" class="m2fm_a1 m2fm_a2" href="javascript:" onclick="approval();">待办业务</a> -->
+       						<!--<input class="m2fm_int m2fm_int2" id="userName" name="userName" placeholder="请输入姓名、身份证号、手机号搜索" type="text" style="width: 350px;">-->
+							<!--
+							<select id="state1" name="" class="m2fm_int" style="width: 110px;">
+								<option value="姓名">姓名</option>
+								<option value="身份证号">身份证号</option>
+								<option value="手机号">手机号</option>
+							</select>
+							<input type="text" class="m2fm_int" placeholder="请输入姓名搜索" style="width: 244px;">
+							-->
+							<input type="text" class="m2fm_int" placeholder="请输入姓名、手机号、身份证号或者介绍信编号" style="width: 350px;">
+       					<a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="ajaxSubmitForm();">查询</a>
+
+       					<span class="model_check  noQuan">
+							<input type="checkbox" class="m2fm_int2" id="todo2" name="todo2" />
+							<label for="todo2"></label>
+							<font>待审批</font>
+
+						</span>
+       					<span class="model_check noQuan"><input class="m2fm_int2" id="todo1" name="todo2" type="checkbox"><label for="todo1"></label><font>未生成</font></span>
+       					<!-- <span class="model_check"><input class="m2fm_int2" id="todo" name="todo" type="checkbox"><label for="todo"></label><font>暂存</font></span> -->
+
+       				  </div>
+           			</div>
+					<div  class="m2fm_tabBox m2fm_tabBox2"
+						  style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;" data-reactid=".0.0.3.2.0">
+						<table width="100%" data-reactid=".0.0.3.2.0.3">
+							<tbody >
+								<tr class="m2th" >
+									<td width="5%" class="center" >序号</td>
+									<td width="5%" class="center" >姓名</td>
+									<td width="15%" class="center" >身份证号</td>
+									<td width="15%" class="center">手机</td>
+									<td width="20%" class="center">原党组织</td>
+									<td width="20%" class="center">目标党组织</td>
+									<td width="6%" class="center">状态</td>
+									<td width="15%" class="center">操作</td>
+								</tr>
+								<tr >
+									<td>01</td>
+									<td>强月悦等</td>
+									<td>130181199508246578</td>
+									<td>1301811995</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td>中共中国移动学院委员会</td>
+									<td>待审批</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('shenp',1)">审批</a>
+										<!--<a class="m2fm_abtn" href="javascript:;">删除</a>-->
+										<a class="m2fm_abtn noQuan" href="javascript:;" onclick="showDiv_letter('produ',3)">编辑介绍信</a>
+
+									</td>
+								</tr>
+								<tr class="noQuan">
+									<td>02</td>
+									<td>李玉等</td>
+									<td>130181199508246578</td>
+									<td>1301811995</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td>中共中国移动学院委员会</td>
+									<td>未生成</td>
+									<td>
+										<a class="m2fm_abtn noQuan" href="javascript:;"  onclick="showDiv_letter('produ',3)">生成介绍信</a>
+										<!--<a class="m2fm_abtn" href="javascript:;">删除</a>-->
+
+
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					<div class="mb10 mt20">
+						<div class="layer_t">已办业务</div>
+                		<div class="m2nad_sbLi" style="padding:0 0 0 0px;">
+       						<!-- <a id="approval" class="m2fm_a1 m2fm_a2" href="javascript:" onclick="approval();">已办业务</a> -->
+       						
+       						<!--<input class="m2fm_int m2fm_int2" id="userName" name="userName" placeholder="请输入姓名、身份证号、手机号、介绍信编号搜索" type="text">-->
+							<!--
+							<select id="state" name="" class="m2fm_int" style="width: 110px;">
+								<option value="姓名">姓名</option>
+								<option value="身份证号">身份证号</option>
+								<option value="手机号">手机号</option>
+							</select>
+							<input type="text" class="m2fm_int" placeholder="请输入姓名搜索" style="width: 244px;">
+							-->
+							<input type="text" class="m2fm_int" placeholder="请输入姓名、手机号、身份证号或者介绍信编号" style="width: 350px;">
+       					<a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="ajaxSubmitForm();">查询</a>
+       					
+       					<span class="model_check"><input class="m2fm_int2" id="todo3" name="todo3" type="checkbox"><label for="todo3"></label><font>已办结</font></span>
+       					<span class="model_check"><input class="m2fm_int2" id="todo4" name="todo3" type="checkbox"><label for="todo4"></label><font>流转中</font></span>
+       				  </div>
+           			</div>
+           				<div  class="m2fm_tabBox m2fm_tabBox2"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;">
+						<table width="100%">
+							<tbody >
+								<tr class="m2th" >
+									<td width="3%" class="center" ><input type="checkbox"></td>
+									<td width="3%" class="center" >序号</td>
+									<td width="5%" class="center" >姓名</td>
+									<td width="15%" class="center" >身份证号</td>
+									<td width="15%" class="center">手机</td>
+									<td width="20%" class="center">原党组织</td>
+									<td width="20%" class="center">目标党组织</td>
+									<td width="6%" class="center">状态</td>
+									<td width="15%" class="center">操作</td>
+								</tr>
+								<tr >
+									<td><input type="checkbox"></td>
+									<td>01</td>
+									<td>强月悦</td>
+									<td>130181199508246578</td>
+									<td>1301811995</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td>中共中国移动学院委员会</td>
+									<td>流转中</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;">撤回</a>
+										<a class="m2fm_abtn noQuan" href="javacsript:;" onclick="showDiv_letter('produ',0)">查看介绍信</a>
+										<!--<a class="m2fm_abtn" href="javascript:;" onclick="record_next('process.html')">流程记录</a>-->
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('shenp',0)">流程记录</a>
+									</td>
+								</tr>
+								<tr >
+									<td><input type="checkbox"></td>
+									<td>02</td>
+									<td>方丽娟</td>
+									<td>130181199508246578</td>
+									<td>1301811995</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td>中共中国移动学院委员会</td>
+									<td>已办结</td>
+									<td>
+										<a class="m2fm_abtn noQuan" href="javacsript:;" onclick="showDiv_letter('produ',0)">查看介绍信</a>
+										<!--<a class="m2fm_abtn" href="javascript:;" onclick="record_next('process.html')">流程记录</a>-->
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('shenp',0)">流程记录</a>
+									</td>
+								</tr>
+								
+							</tbody>
+						</table>
+					</div>
+
+
+					<!--<div class="text-right mt20">
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2 noQuan'>下载介绍信</a>
+						<a href="javascript:;" class="m2fm_a1 m2fm_a2 noQuan">打印介绍信</a>
+					</div>-->
+
+
+
+					
+<!--第一个iframe结束-->
+
+				</div>
+				<div >
+					<div id="g3w-loading" class="g3w-loading" >
+						<div class="g3w-inner-loading" >
+							<span class="g3w-loading" ><i
+								></i><i
+								></i><i
+								></i></span>
+						</div>
+						<div class="loading-mask" ></div>
+					</div>
+					<div id="g3w-windows-mask" class="g3w-windows-mask"
+						></div>
+				</div>
+			</div>
+			<div class="footerBg" style="width:100%;" >
+				<div class="footer" style="margin:0 auto;width:1025px;"
+					>
+					<a class="cor_bs" href="/help" >使用帮助</a><span
+						data-reactid=".0.1.0.1">&nbsp; 中国移动通信集团有限公司版权所有 &nbsp;
+						京ICP备05002571号-1</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    
+    <div class="diogle"></div>
+    <!--编辑弹层-->
+    <div class="edits">
+    	<div class="layer_t">修改</div>
+    	<div class="mb10">
+                		<select id="state" name="" class="m2fm_int" style="width: 110px;">
+                   		 	<option value="姓名">姓名</option>
+                    		<option value="身份证号">身份证号</option>
+                    		<option value="身份证号">手机号</option>
+                		</select>
+                		<input type="text" class="m2fm_int" placeholder="请输入姓名、手机号、身份证号或者介绍信编号">
+                		<a href="javascript:;" class="m2fm_a1 m2fm_a2">搜索</a>
+                		<select id="state" name="" class="m2fm_int" style="width: 120px;display:block;margin-top:10px;">
+                   		 	<option value="选择机构">选择机构</option>
+                    		<option value="机构1">机构1</option>
+                    		<option value="机构2">机构2</option>
+                		</select>
+
+           			</div>
+           			<div class="layer_t">党员信息</div>
+					<div  class="m2fm_tabBox m2fm_tabBox2"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;">
+						<table width="100%">
+							<tbody >
+								<tr class="m2th" >
+									<td width="5%" class="center" >姓名</td>
+									<td width="5%" class="center" >性别</td>
+									<td width="10%" class="center" >正式/预备</td>
+									<td width="15%" class="center" >身份证号</td>
+									<td width="15%" class="center">所属党组织</td>
+									<td width="15%" class="center">党费交至</td>
+									<td width="15%" class="center">操作</td>
+								</tr>
+								<tr >
+									<td>强月悦</td>
+									<td>男</td>
+									<td>正式</td>
+									<td>130181199508246578</td>
+									<td>中移全通</td>
+									<td>2017-12</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="businessHandling('99df1d248cc34fe793e084e5431b768a');" data-reactid=".0.0.3.2.0.3.0.1:$0.4.0">添加</a>
+									</td>
+								</tr>
+								<tr >
+									<td>孙红</td>
+									<td>女</td>
+									<td>正式</td>
+									<td>130181199308243457</td>
+									<td>中移全通</td>
+									<td>2017-8</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="businessHandling('99df1d248cc34fe793e084e5431b768a');" data-reactid=".0.0.3.2.0.3.0.1:$0.4.0">添加</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="layer_t">转出党员</div>
+				    <div  class="m2fm_tabBox m2fm_tabBox2 mt20"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;">
+						<table width="100%">
+							<tbody >
+								<tr class="m2th" >
+									<td width="5%" class="center" >姓名</td>
+									<td width="5%" class="center" >性别</td>
+									<td width="10%" class="center" >正式/预备</td>
+									<td width="15%" class="center" >身份证号</td>
+									<td width="15%" class="center">所属党组织</td>
+									<td width="15%" class="center">党费交至</td>
+									<td width="15%" class="center">操作</td>
+								</tr>
+								<tr >
+									<td>强月悦</td>
+									<td>男</td>
+									<td>正式</td>
+									<td>130181199508246578</td>
+									<td>中移全通</td>
+									<td>2017-12</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('modify')">修改</a>
+										<a class="m2fm_abtn" href="javascript:;">删除</a>
+									</td>
+								</tr>
+								<tr >
+									<td>孙红</td>
+									<td>女</td>
+									<td>正式</td>
+									<td>130181199308243457</td>
+									<td>中移全通</td>
+									<td>2017-8</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('modify')">修改</a>
+										<a class="m2fm_abtn" href="javascript:;">删除</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="text-right mt20" style="margin-top: 40px;">
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2' onclick="showDiv('trees')">选择目标组织</a>
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2'>暂存</a>
+						<a href="javascript:;" class="m2fm_a1 m2fm_a2" id="nextOp">下一步</a>
+					</div>
+									<div id="letter_create" class="m2fm_tabBox" style="display: block;position:relative;top:20px;left:0px;border-top:2px solid #f8ebc8;padding-bottom: 20px;margin-bottom: 20px;">
+   	<!-- id=todolist -->
+   		<form id="form_letter" action="##" method="post">
+   		<input type="hidden" id="taskId" name="taskId">
+   		<input type="hidden" id="letterType" name="letterType">
+   		
+   	<!--   第一联             -->
+			<table id="letter1" style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="6" style="text-align: center;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;font-size: 22px;font-weight: bold;font-family:'stzhongsongregular'">
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td rowspan="3" style="width: 40px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right:1px solid black;"><label style="font-family:'stzhongsongregular';font-size: 18px;font-weight:bold;">党<br>员<br>介<br>绍<br>信<br>存<br>根
+						</label></td>
+						<td colspan="3" style=" line-height:30px;padding-right:50px; text-align: right;border-top:1px solid black;border-left:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode1" name="letterCode1" size="10">号
+						</td>
+						<td rowspan="3" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">第<br>一<br>联
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:left;padding-top:10px;padding-left:20px;padding-bottom:10px;border-left:2px;border-top:0px; border-bottom:0px;" colspan="3">
+							<p style="line-height:20px;">
+							   &nbsp; &nbsp; &nbsp;<input type="text" id="partyMembName1" name="partyMembName1" style="width: 100px;text-align: center;" size="10">同志系中共
+							<input type="text" placeholder="党员/预备党员" id="partyMembType1" name="partyMembType1" size="8">
+							，组织关系由 <input type="text" placeholder="原组织机构" id="fromOrg1" name="fromOrg1" size="30"> 转到 <input type="text" id="toOrg1" name="toOrg1" placeholder="目标组织机构" size="30">。
+							</p>
+							</td>
+					</tr>
+					<tr>
+						<td colspan="3" style="line-height:40px;padding-right:60px; text-align: right;border-left:0px;border-top:0px;border-bottom: 1px solid black;">
+							<input type="text" id="fillDateYear1" name="fillDateYear1" size="5">年 <input type="text" id="fillDateMonth1" name="fillDateMonth1" size="5">月 <input type="text" id="fillDateDay1" name="fillDateDay1" size="5">日
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6" style=" line-height:40px; text-align: center;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; border-top:0px;">
+							（贴回执联处）</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		<!--               中间联       --  >                        
+			<br><br><table id="letter2" style=" text-align: center; font-size:14px; margin-top: 40px;" width="100%" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;">
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td style=" line-height:30px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode2" class="required" style="vertical-align: middle; " name="letterCode2" size="15">号
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td rowspan="8" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">
+							<br>第<br><br>二<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px; float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+							&nbsp;&nbsp;<input type="text" id="approveOrg2" class="required" name="approveOrg2" size="30">：
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:30px;border-left:1px solid black;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;border-bottom:0px;border-top:0px;border-right:0px;">
+						    <p style="line-height:20px;text-align:left;">
+						       &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="partyMembName2" class="required" name="partyMembName2" size="20">
+							同志（
+							<input type="text" id="sex" class="required" placeholder="性别" name="sex" size="5">
+							），
+							<input type="text" id="age" class="required" placeholder="年龄" name="age" size="5">
+							岁，
+							<input type="text" id="nation" class="required" name="nation" size="5">
+							族，系中共
+							<input type="text" id="partyMembType2" placeholder="党员/预备党员" class="required" name="partyMembType2" size="5">
+							，
+							身份证号码
+							<input type="text" id="idcardnum" class="required" name="idcardnum" size="20">
+							，由
+							<input type="text" id="fromOrg2" class="required" placeholder="原机构名称" name="fromOrg2" size="30">
+							去
+							<input type="text" id="toOrg2" class="required" placeholder="目标机构名称" name="toOrg2" size="30">
+							，请转接组织关系。该同志党费已交到
+							<input type="text" id="payDateYear" class="required" name="payDateYear" size="5">
+							年
+							<input type="text" id="payDateMonth" class="required" name="payDateMonth" size="5">
+							月
+							。<br>（有效期
+							<input type="text" id="validDate" class="required" placeholder="7/15/30" name="validDate" size="5">
+							天）<br>
+						    </p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right; ">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							<p style=" float:right; ">
+							<input type="text" id="fillDateYear2" class="required" name="fillDateYear2" size="5">年
+							<input type="text" id="fillDateMonth2" class="required" name="fillDateMonth2" size="5">月
+							<input type="text" id="fillDateDay2" class="required" name="fillDateDay2" size="5">日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="tdborderleft" style="border-top:0px;border-left:1px solid black;border-bottom:0px;border-right:0px;">
+							<p style=" float:left;line-height:20px;padding-left:20px; ">
+								党员联系电话或其他联系方式：
+								<input type="text" id="phoneNum22" class="required" name="phoneNum22" size="20">
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="tdborderleft" style="border-left:1px solid black;border-top:0px;border-bottom:0px;border-right:0px;">
+							<p style=" float:left;line-height:38px;padding-left:20px; ">
+							党员原所在基层党委通讯地址：
+							<input type="text" id="commiteAddress" class="required" name="commiteAddress" size="40">
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;">
+							<p style=" float:left;line-height:20px; padding-left:20px;padding-bottom:10px;">
+								联系电话：
+								<input type="text" id="linkMobile2" class="required" name="linkMobile2" size="20">
+								&nbsp;&nbsp;&nbsp;传真:
+								<input type="text" id="fax" class="required" name="fax" size="10">
+								&nbsp;&nbsp;&nbsp;邮编:
+								<input type="text" id="mailCode" class="required" name="mailCode" size="10">
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" style=" height:30px; border-top: 0px;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; "></td>
+					</tr>
+				</tbody>
+			</table> 
+			<!--               回执联     -->                             
+			<table id="letter3" style=" text-align: center; font-size:16px; " width="100%" cellspacing="1" cellpadding="1">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;font-size: 20px;">
+							中国共产党党员组织关系介绍信回执联</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td style=" line-height:30px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode3" class="required" style="vertical-align: middle; " name="letterCode3" size="15">号
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td rowspan="6" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">
+							<br>第<br><br>三<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px;float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+							&nbsp;&nbsp;<input type="text" id="approveOrg3" class="required" placeholder="原机构名称" name="approveOrg3" size="30">：
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:30px;border-left:1px solid black;border-bottom:0px;border-top:0px;border-right:0px;">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="text" id="partyMembName3" class="required" name="partyMembName3" size="20">
+							同志的党员组织关系已转达我处，特此回复。
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right; ">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							<p style=" float:right; ">
+							<input type="text" id="fillDateYear3" name="fillDateYear3" size="5">年
+							<input type="text" id="fillDateMonth3" name="fillDateMonth3" size="5">月
+							<input type="text" id="fillDateDay3" name="fillDateDay3" size="5">日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;padding-bottom:20px;padding-left:10px;">
+							<p style=" float:left; ">
+								经办人:
+								<input type="text" id="operator" name="operator" size="10">
+								&nbsp;&nbsp;&nbsp;联系电话：
+								<input type="text" id="linkMobile3" name="linkMobile3" size="20">
+								&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr style="border-left: 0">
+						<td colspan="2" style=" height:30px; border: 0px; ">
+							注：回执联由接收党员组织关系的基层党委在接收党员后一个月内邮寄或传真至党员原所在基层党委。	
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			<!-- <p style="text-align: center;">
+				<button type="button" id="saveBtn" onclick="saveLetter();" class="btn-blue" data-icon="save">保存</button> 
+				<button type="button" onclick="hideletterpage();" class="btn-blue" data-icon="save">关闭</button>
+			   			</p> -->
+
+
+           <!--<p style="text-align: center;margin-top: 40px;margin-top: 40px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #505050;">第 1 页</p>-->
+   			<table  class="table1" style=" text-align: center;margin-top: 20px;" width="100%" cellspacing="0"
+				cellpadding="0"  >
+				
+					 <tr>
+						<td colspan="11" style="text-align:center;">整建制转移组织关系党员名单</td>
+					</tr>
+					<tr>
+	                  		<td class="center">序号</td>
+							<td class="center">姓名</td>
+							<td class="center">性别</td>
+							<td class="center">年龄</td>
+							<td class="center">民族</td>
+							<td class="center">正式/预备</td>
+							<td class="center">身份证号</td>
+							<td class="center">转出单位</td>
+							<td class="center">转入单位</td>
+							<td class="center">党费交纳截止时间</td>
+							<td class="center">联系电话</td>
+					 </tr>
+					
+	                  <tr>
+	                  		<td class="center">1</td>
+							<td class="center">王红</td>
+							<td class="center">女</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511721198112257124</td>
+							<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+							<td class="center">中共中国移动学院委员会</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+	                   <tr>
+	                  		<td class="center">2</td>
+							<td class="center">李玉</td>
+							<td class="center">男</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511731194112257124</td>
+							<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+							<td class="center">中共中国移动学院委员会</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+       
+			</table>
+		</form>
+		
+   </div>
+
+   
+    </div>
+	<!--审批弹层-->
+    <div class="shenp">
+    	<div class="layer_t">审批
+            <a class="m2fm_a1 m2fm_a2" style="cursor: pointer;float: right" onclick="hideDiv('shenp');">关闭</a> 
+    	</div>
+    	<div class="mb10">
+						<div class="m2nad_sbLi" style="padding:0 0 0 0px;">
+							<a id="jilu" class="m2fm_a1 m2fm_a2" style="cursor: pointer;" onclick="changeState(0);">流程记录</a>
+							<a id="tu" class="m2fm_a1 m2fm_a2" style="cursor: pointer;" onclick="changeState(1);">流程图</a>
+						</div>
+                		
+           			</div>
+   <div  class="tab0 m2fm_tabBox m2fm_tabBox2"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;">
+						<table width="100%">
+							<tbody >
+								<tr class="m2th">
+									<td width="35%" class="center">机构名称</td>
+									<td width="20%" class="center">操作时间</td>
+									<td width="10%" class="center">审批结果</td>
+									<td width="8%" class="center">审批人</td>
+									<td width="11%" class="center">联系方式</td>
+									<td width="14%" class="center ">介绍信</td>
+								</tr>
+								<tr>
+									<td class="center">综合部党委</td>
+									<td class="center"></td>
+									<td class="center">已办理</td>
+									<td class="center">
+									</td>
+									<td class="center"></td>
+									<td class="center ">
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv_letter('produ',0)">查看</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="center">中共中国移动通信集团北京有限公司委员会</td>
+									<td class="center"></td>
+									<td class="center">已办理</td>
+									<td class="center"></td>
+									<td class="center"></td>
+									<td class="center ">
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv_letter('produ',0)">查看</a>
+										<a class="m2fm_abtn " href="javascript:;" >下载</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="tab0 m2fm_tabBox m2fm_tabBox2" style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;display: none;" id="snakerflow">
+						<img src="webapp/orgChart.jpg" alt="" style="margin-left: 25px;">
+					</div>
+
+
+					<div class="text-right mt20" id="showOrNotbtn">
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2' id="agree_letter">同意<span class="noQuan"></span></a>
+						<!--<a href="javascript:;" class='m2fm_a1 m2fm_a2 noQuan' id="load_letter">下载上一节点的介绍信</a>-->
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2' id="return_letter">退回上一节点</a>
+					</div>
+                   <div class="m2fm_tabBox">
+
+
+					   <!-- 	<div id="letter_create">
+
+   		<form id="form_letter3" action="##" method="post">
+   		<input type="hidden" id="taskId" name="taskId">
+   		<input type="hidden" id="letterType" name="letterType">
+   		
+			
+
+			<table id="letter2" style=" text-align: center; font-size:14px; " width="100%" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;font-size: 16px;font-weight: bold;font-family:'stzhongsongregular'" >
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td style=" line-height:30px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode2" class="required" style="vertical-align: middle; " name="letterCode2" size="15">号
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td rowspan="8" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">
+							<br>第<br><br>二<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px; float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+							&nbsp;&nbsp;<input type="text" id="approveOrg2" class="required" name="approveOrg2" size="30">：
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:30px;border-left:1px solid black;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;border-bottom:0px;border-top:0px;border-right:0px;">
+						    <p style="line-height:20px;text-align:left;">
+						       &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="partyMembName2" class="required" name="partyMembName2" size="20">
+							同志（
+							<input type="text" id="sex" class="required" placeholder="性别" name="sex" size="5">
+							），
+							<input type="text" id="age" class="required" placeholder="年龄" name="age" size="5">
+							岁，
+							<input type="text" id="nation" class="required" name="nation" size="5">
+							族，系中共
+							<input type="text" id="partyMembType2" placeholder="党员/预备党员" class="required" name="partyMembType2" size="5">
+							，
+							&nbsp;&nbsp;身份证号码
+							<input type="text" id="idcardnum" class="required" name="idcardnum" size="20">
+							，由
+							<input type="text" id="fromOrg2" class="required" placeholder="原机构名称" name="fromOrg2" size="30">
+							去
+							<input type="text" id="toOrg2" class="required" placeholder="目标机构名称" name="toOrg2" size="30">
+							，请转接组织关系。该同志党费已交到
+							<input type="text" id="payDateYear" class="required" name="payDateYear" size="5">
+							年
+							<input type="text" id="payDateMonth" class="required" name="payDateMonth" size="5">
+							月
+							。<br>（有效期
+							<input type="text" id="validDate" class="required" placeholder="7/15/30" name="validDate" size="5">
+							天）<br>
+						    </p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right; ">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							<p style=" float:right; ">
+							<input type="text" id="fillDateYear2" class="required" name="fillDateYear2" size="5">年
+							<input type="text" id="fillDateMonth2" class="required" name="fillDateMonth2" size="5">月
+							<input type="text" id="fillDateDay2" class="required" name="fillDateDay2" size="5">日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="tdborderleft" style="border-top:0px;border-left:1px solid black;border-bottom:0px;border-right:0px;">
+							<p style=" float:left;line-height:20px;padding-left:20px; ">
+								党员联系电话或其他联系方式：
+								<input type="text" id="phoneNum22" class="required" name="phoneNum22" size="20">
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td class="tdborderleft" style="border-left:1px solid black;border-top:0px;border-bottom:0px;border-right:0px;">
+							<p style=" float:left;line-height:38px;padding-left:20px; ">
+							党员原所在基层党委通讯地址：
+							<input type="text" id="commiteAddress" class="required" name="commiteAddress" size="40">
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;">
+							<p style=" float:left;line-height:38px; padding-left:20px;padding-bottom:30px;">
+								联系电话：
+								<input type="text" id="linkMobile2" class="required" name="linkMobile2" size="20">
+								&nbsp;&nbsp;&nbsp;传真:
+								<input type="text" id="fax" class="required" name="fax" size="10">
+								&nbsp;&nbsp;&nbsp;邮编:
+								<input type="text" id="mailCode" class="required" name="mailCode" size="10">
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" style=" height:30px; border-top: 0px;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; "></td>
+					</tr>
+				</tbody>
+			</table>
+	        <br>
+	        		<table  class="table1" style="margin-bottom: 20px;text-align: center;margin-top: 20px;" width="100%" cellspacing="0"
+				cellpadding="0"  >
+				
+					 <tr>
+						<td colspan="11" style="text-align:center;">整建制转移组织关系党员名单</td>
+					</tr>
+					<tr>
+	                  		<td class="center">序号</td>
+							<td class="center">姓名</td>
+							<td class="center">性别</td>
+							<td class="center">年龄</td>
+							<td class="center">民族</td>
+							<td class="center">正式/预备</td>
+							<td class="center">身份证号</td>
+							<td class="center">转出单位</td>
+							<td class="center">转入单位</td>
+							<td class="center">党费交纳截止时间</td>
+							<td class="center">联系电话</td>
+					 </tr>
+					
+	                  <tr>
+	                  		<td class="center">1</td>
+							<td class="center">王红</td>
+							<td class="center">女</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511721198112257124</td>
+							<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+							<td class="center">中共中国移动学院委员会</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+	                   <tr>
+	                  		<td class="center">2</td>
+							<td class="center">李玉</td>
+							<td class="center">男</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511731194112257124</td>
+							<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+							<td class="center">中共中国移动学院委员会</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+       
+			</table>
+		
+		</form>
+		
+   </div>-->
+				   </div>
+    </div>
+
+    <!--查看介绍信弹层-->
+    <div class="produ">
+    	<div class="layer_t">介绍信 <!--  <a class="m2fm_a1 m2fm_a2" style="cursor: pointer;float: right" onclick="hideDiv('produ');">关闭</a>  --></div>
+
+
+		<div id="letterSimpleBtn" style="display: block;float:right;margin-bottom:10px">
+			<a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="hideThisDiv('produ');">关闭</a>
+		</div>
+
+		<div id="options" class="div2">
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="edit_letter()">编辑</a>
+		<a class="m2fm_a1 m2fm_a2" href="javascript:">编号</a>		
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:alert('是否提交下一步处理?');hideDiv('produ')">提交下一步处理</a>
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:">保存</a>
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="hideDiv('produ');">保存并关闭</a>
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:">注销</a>
+		<!-- <a class="m2fm_a1 m2fm_a2" href="javascript:" onclick="hideDiv('produ')">关闭</a> -->
+    	</div>
+    	<div id="opxz" class="div2">
+			<a href="javascript:;" class='m2fm_a1 m2fm_a2 noQuan' onclick="hideDiv('produ');">下载介绍信</a>
+			<a href="javascript:;" class='m2fm_a1 m2fm_a2 noQuan' onclick="hideDiv('produ');">打印介绍信</a>
+		</div>
+    	<div class="m2fm_tabBox" style="border-top:2px solid #f8ebc8;margin-top: 10px;clear:both;">
+    		
+						<div id="letter_create">
+
+							 	<!-- id=todolist -->
+	   		<form id="form_letter0" action="##" method="post">
+	   		<input type="hidden" id="taskId" name="taskId">
+	   		<input type="hidden" id="letterType" name="letterType">
+	   			<!--   第一联             -->
+			<table id="letter1" style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="6" style="text-align: center;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;font-size: 22px;font-weight: bold;font-family:'stzhongsongregular'">
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td rowspan="3" colspan="3" style="width: 110px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right:1px solid black;"><label style="font-family:'stzhongsongregular';font-size: 18px;font-weight:bold;">党<br>员<br>介<br>绍<br>信<br>存<br>根
+						</label></td>
+						<td colspan="3" style=" line-height:30px;padding-right:50px; text-align: right;border-top:1px solid black;border-left:0px; border-bottom:0px;    font-family: '仿宋';font-size: 18px;">
+							第 N2018001 号
+						</td>
+						<td rowspan="3" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black; font-family: '仿宋';font-size: 16px;">第<br>一<br>联
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:left;padding-top:10px;padding-left:20px;padding-bottom:10px;border-left:2px;border-top:0px; border-bottom:0px;" colspan="2">
+							<p style="line-height:30px;    font-family: '仿宋';font-size: 18px;">
+							   &nbsp; &nbsp; <span style="text-decoration: underline;">李玉</span>等同志系中共
+							<span style="text-decoration: underline;">正式党员</span>
+							，组织关系由 <span style="text-decoration: underline;">中共卓望信息技术（北京）有限公司委员会</span> 转到 <span style="text-decoration: underline;">中共中国移动学院委员会</span>。
+							</p>
+							</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="line-height:40px;padding-right:60px; text-align: right;border-left:0px;border-top:0px;border-bottom: 1px solid black; font-family: '仿宋';font-size: 18px;">
+							<span>2018</span> 年 <span>1</span> 月 <span>4</span> 日
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+				<tr>
+					<td colspan="6" style=" line-height:40px; text-align: center;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; border-top:0px;    font-family: '仿宋';font-size: 16px;">
+						（贴回执联处）</td>
+				</tr>
+				<tr>
+					<td colspan="6" style=" line-height:40px; text-align: right;padding-right:30px;border-left: 0px;border-right: 0px;border-bottom:0px ; border-top:0px;    font-family: '仿宋';font-size: 16px;">
+						（加盖骑缝章）</td>
+				</tr>
+			</table>
+			<!--               中间联                                  -->
+				<table id="letter2" style=" text-align: center; font-size:14px;margin-top:10px; " width="100%" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th colspan="2" style="text-align: center;border:0px;font-size: 22px;font-weight: bold;font-family:'stzhongsongregular'" >
+								中国共产党党员组织关系介绍信</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr >
+							
+							<td colspan="3"  style=" line-height:30px; padding-right:50px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;    font-family: '仿宋';font-size: 18px;">
+								第 N2018001 号
+							</td>
+							<td rowspan="8" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;    font-family: '仿宋';font-size: 16px;">
+								<br>第<br><br>二<br><br>联<br>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style=" line-height:30px; float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+								&nbsp;&nbsp;<span style="text-decoration: underline;font-family: '仿宋';font-size: 18px;padding-left:10px;">中共卓望信息技术（北京）有限公司委员会：</span>
+							</td>
+						</tr>
+						<tr>
+							<td style=" line-height:30px;border-left:1px solid black;padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;border-bottom:0px;border-top:0px;border-right:0px;">
+							    <p style="line-height:30px;text-align:left;font-family: '仿宋';font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;<span style="text-decoration: underline;">李玉</span>
+								等同志,
+								男
+								，
+								<span style="text-decoration: underline;">31</span>
+								岁，
+								<span style="text-decoration: underline;">汉</span>
+								族，系中共
+								(正式)党员
+								，
+								身份证号码
+								<span style="text-decoration: underline;">511721198112257124</span>
+								,由<span style="text-decoration: underline;">中共卓望信息技术（北京）有限公司委员会</span>
+								转去
+								<span style="text-decoration: underline;">中共中国移动学院委员会</span>
+								，请转接组织关系。该同志党费已交到
+								<span>2017</span>
+								年
+								<span>12</span>
+								月
+								。<br>（有效期
+								60
+								天）<br>
+							    </p>
+								
+							</td>
+						</tr>
+						<tr>
+							<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								
+								<p style=" float:right;font-family: '仿宋';font-size: 18px; ">
+									（盖章）
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+								
+							</td>
+						</tr>
+						<tr>
+							<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								<p style=" float:right;line-height:30px;font-family: '仿宋'; font-size: 18px;">
+								<span>2018</span>年
+								<span>1</span>月
+								<span>4</span>日
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-top:0px;border-left:1px solid black;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:20px;padding-left:20px; font-family: '仿宋';font-size: 18px;">
+									党员联系电话或其他联系方式：
+									<span>13900000048</span>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-left:1px solid black;border-top:0px;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:38px;padding-left:20px; font-family: '仿宋';font-size: 18px;">
+								党员原所在基层党委通讯地址：
+								<span>中共卓望信息技术（北京）有限公司委员会</span>
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;">
+								<p style=" float:left;line-height:20px; padding-left:20px;padding-bottom:10px;font-family: '仿宋';font-size: 18px;">
+									联系电话：
+									<span">13900000048</span>
+									&nbsp;&nbsp;&nbsp;传真:
+									89356618
+									&nbsp;&nbsp;&nbsp;邮编:
+									<span>215153  </span>
+								</p>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+					<tr>
+						<td colspan="2" style=" line-height:40px; text-align: center;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; border-top:0px;    font-family: '仿宋';">
+							</td>
+					</tr>
+				</table>
+		        <br>
+		        <!--               回执联      -->                            
+			<table id="letter3" style=" text-align: center; font-size:16px; " width="100%" cellspacing="1" cellpadding="1">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;font-weight: bold;font-size: 22px;font-family:'stzhongsongregular'">
+							中国共产党党员组织关系介绍信回执联</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td colspan="3" style=" line-height:30px; padding-right:50px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;font-family: '仿宋';font-size: 18px;">
+							第 N2018001 号
+						</td>
+						<td rowspan="6" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;font-family: '仿宋';font-size: 16px;">
+							<br>第<br><br>三<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px;float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+							&nbsp;&nbsp;<span style="text-decoration: underline;font-family: '仿宋';font-size: 18px;padding-left:10px;">中共卓望信息技术（北京）有限公司委员会：</span>
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:40px;border-left:1px solid black;border-bottom:0px;border-top:0px;border-right:0px;text-align: left;text-indent: 2.5em;font-family: '仿宋';font-size: 18px;">
+							<span style="text-decoration: underline;padding-left:10px;">李玉</span>等同志的党员组织关系已转达我处，特此回复。
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right; font-family: '仿宋';font-size: 18px;">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							<p style=" float:right;font-family: '仿宋';font-size: 18px; ">
+							<span>2018</span>年
+							<span>1</span>月
+							<span>4</span>日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;padding-bottom:20px;padding-left:10px;">
+							<p style=" float:left; font-family: '仿宋';font-size: 18px;padding-left:10px;">
+								经办人:
+								<span>刘强</span>
+								&nbsp;&nbsp;&nbsp;联系电话：
+								<span >17334541234</span>
+								&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+
+					
+				</tbody>
+			</table>
+				<table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+					<tr style="border-left: 0">
+						<td colspan="2" style=" height:30px; border: 0px; font-family: '仿宋';font-size: 16px;">
+							注：回执联由接收党员组织关系的基层党委在接收党员后一个月内邮寄或传真至党员原所在基层党委。
+						</td>
+					</tr>
+				</table>
+<p style="text-align: center;margin-top: 40px;margin-top: 40px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #505050;"></p>
+		        		<table  class="table1" style="margin-bottom: 20px;text-align: center;margin-top: 20px;" width="100%" cellspacing="0"
+					cellpadding="0"  >
+					
+						 <tr>
+							<td colspan="11" style="text-align:center;">整建制转移组织关系党员名单</td>
+						</tr>
+						<tr>
+		                  		<td class="center">序号</td>
+								<td class="center">姓名</td>
+								<td class="center">性别</td>
+								<td class="bianji">年龄</td>
+								<td class="center">民族</td>
+								<td class="center">正式/预备</td>
+								<td class="center">身份证号</td>
+								<td class="center">转出单位</td>
+								<td class="center">转入单位</td>
+								<td class="center">党费交纳截止时间</td>
+								<td class="center">联系电话</td>
+						 </tr>
+						
+		                  <tr>
+		                  		<td class="center">1</td>
+								<td class="center">王红</td>
+								<td class="center">女</td>
+								<td class="center">32</td>
+								<td class="center">汉</td>
+								<td class="cneter">正式</td>
+								<td class="center">511721198112257124</td>
+								<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+								<td class="center">中共中国移动学院委员会</td>
+								<td class="center">2017-12</td>
+								<td class="center">13900000048</td>
+						 </tr>
+		                   <tr>
+		                  		<td class="center">2</td>
+								<td class="center">李玉</td>
+								<td class="center">男</td>
+								<td class="center">32</td>
+								<td class="center">汉</td>
+								<td class="cneter">正式</td>
+								<td class="center">511731194112257124</td>
+								<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+								<td class="center">中共中国移动学院委员会</td>
+								<td class="center">2017-12</td>
+								<td class="center">13900000048</td>
+						 </tr>
+	       
+				</table>
+			
+			</form>
+	   	<!-- id=todolist -->
+	   		<form id="form_letter1" action="##" method="post"  style="display: none;">
+	   		<input type="hidden" id="taskId" name="taskId">
+	   		<input type="hidden" id="letterType" name="letterType">
+	   				<!--   第一联             -->
+				<table id="letter1" style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th colspan="6" style="text-align: center;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;font-size: 22px;font-weight: bold;font-family:'stzhongsongregular'">
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td rowspan="3" colspan="3" style="width: 110px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right:1px solid black;"><label style="font-family:'stzhongsongregular';font-size: 18px;font-weight:bold;">党<br>员<br>介<br>绍<br>信<br>存<br>根
+						</label></td>
+						<td colspan="3" style=" line-height:30px;padding-right:50px; text-align: right;border-top:1px solid black;border-left:0px; border-bottom:0px;font-family: '仿宋';font-size: 18px;">
+							第<input type="text" id="letterCode1" name="letterCode1" size="10" value="N2018001">号
+						</td>
+						<td rowspan="3"  style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed;border-bottom:1px dashed;font-family: '仿宋';font-size:16px;">第<br>一<br>联
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3"  style="text-align:left;padding-top:10px;padding-left:20px;padding-bottom:10px;border-left:2px;border-top:0px; border-bottom:0px;" colspan="3">
+							<p style="line-height:30px;font-family: '仿宋';font-size: 18px;">
+								&nbsp; &nbsp; &nbsp;<input type="text" id="partyMembName1" name="partyMembName1" style="width: 100px;text-align: center;" size="10" value="李玉">等同志系中共
+								<input type="text" placeholder="党员/预备党员" id="partyMembType1" name="partyMembType1" size="8" value="正式党员" >
+								，组织关系由 <input type="text" placeholder="原组织机构" id="fromOrg1" name="fromOrg1" size="32" value="中共卓望信息技术（北京）有限公司委员会" style="width:380px;"> 转到 <input type="text" id="toOrg1" name="toOrg1" placeholder="目标组织机构" size="30" value="中共中国移动学院委员会">。
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" style="line-height:40px;padding-right:60px; text-align: right;border-left:0px;border-top:0px;border-bottom: 1px solid black;font-family: '仿宋';">
+							<input type="text" id="fillDateYear1" name="fillDateYear1" size="5" value="2018">年 <input type="text" id="fillDateMonth1" name="fillDateMonth1" size="5" value="1">月 <input type="text" id="fillDateDay1" name="fillDateDay1" size="5" value="4">日
+						</td>
+					</tr>
+					</tbody>
+				</table><table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+
+				<tr>
+					<td colspan="6" style=" line-height:40px; text-align: center;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; border-top:0px;font-family: '仿宋';font-size: 16px;">
+						（贴回执联处）</td>
+				</tr>
+				<tr>
+					<td colspan="6" style=" line-height:40px; text-align: right;padding-right:30px;border-left: 0px;border-right: 0px;border-bottom:0px ; border-top:0px;    font-family: '仿宋';font-size: 16px;">
+						（加盖骑缝章）</td>
+				</tr>
+				</table>
+				
+			<!--               中间联                                  -->
+				<table id="letter2" style=" text-align: center; font-size:14px;margin-top:10px; " width="100%" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th colspan="2" style="text-align: center;border:0px;font-size: 22px;font-weight: bold;font-family: 'stzhongsongregular';" >
+								中国共产党党员组织关系介绍信</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							
+							<td colspan="2"  style=" line-height:30px; padding-right:50px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;font-family: '仿宋';">
+								第<input type="text" id="letterCode3" class="required" style="vertical-align: middle;font-size: 18px; " name="letterCode3" size="15" value="N2018001">号
+							</td>
+							<td rowspan="8"  style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;font-family: '仿宋';">
+								<br>第<br><br>二<br><br>联<br>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style=" line-height:30px; float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;font-family: '仿宋';">
+								&nbsp;&nbsp;<input type="text" id="approveOrg3" class="required" placeholder="原机构名称" style="vertical-align: middle;font-size: 18px; " size="40" value="中共卓望信息技术（北京）有限公司委员会">：
+							</td>
+						</tr>
+						<tr>
+							<td  style=" line-height:30px;border-left:1px solid black;padding-left:20px;padding-right:20px;padding-top:10px;padding-bottom:10px;border-bottom:0px;border-top:0px;border-right:0px;font-family: '仿宋';">
+							    <p style="line-height:30px;text-align:left;;font-size: 18px;">
+							       &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" style="vertical-align: middle;font-size: 18px; " id="partyMembName2" class="required" name="partyMembName2" size="20" value="李玉">
+								等同志,
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="sex" class="required" placeholder="性别" name="sex" size="5" value="男">
+								，
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="age" class="required" placeholder="年龄" name="age" size="5" value="31">
+								岁，
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="nation" class="required" name="nation" size="5">
+								族，系中共
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="partyMembType2" placeholder="党员/预备党员" class="required" name="partyMembType2" size="5" value="正式党员">
+								，
+								身份证号码
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="idcardnum" class="required" name="idcardnum" size="20" value="511721198112257124">
+								，由
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="fromOrg2" class="required" placeholder="原机构名称" name="fromOrg2" size="30" value="中共卓望信息技术（北京）有限公司委员会">
+								转去
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="toOrg2" class="required" placeholder="目标机构名称" name="toOrg2" size="30" value="中共中国移动学院委员会">
+								，请转接组织关系。该同志党费已交到
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="payDateYear" class="required" name="payDateYear" size="5" value="2017">
+								年
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="payDateMonth" class="required" name="payDateMonth" size="5" value="12">
+								月
+								。<br>（有效期
+								 <select name="" id=""><option value="30">30</option><option value="45">45</option><option value="60">60</option></select>
+								天）<br>
+							    </p>
+
+								
+							</td>
+						</tr>
+						<tr>
+							<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								
+								<p style=" float:right; font-family: '仿宋';font-size: 18px;">
+									（盖章）
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+								
+							</td>
+						</tr>
+						<tr>
+							<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								<p style=" float:right; font-family: '仿宋';font-size: 18px;">
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateYear2" class="required" name="fillDateYear2" size="5" value="2018">年
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateMonth2" class="required" name="fillDateMonth2" size="5" value="1">月
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateDay2" class="required" name="fillDateDay2" size="5" value="4">日
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-top:0px;border-left:1px solid black;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:20px;padding-left:20px;font-family: '仿宋';font-size: 18px; ">
+									党员联系电话或其他联系方式：
+									<input type="text" style="vertical-align: middle;font-size: 18px; " id="phoneNum22" class="required" name="phoneNum22" size="20" value="13900000048">
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-left:1px solid black;border-top:0px;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:38px;padding-left:20px; font-family: '仿宋';font-size: 18px;">
+								党员原所在基层党委通讯地址：
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="commiteAddress" class="required" name="commiteAddress" size="40" value="中共卓望信息技术（北京）有限公司委员会">
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;">
+								<p style=" float:left;line-height:20px; padding-left:20px;padding-bottom:10px;font-family: '仿宋';font-size: 18px;">
+									联系电话：
+									<input type="text" style="vertical-align: middle;font-size: 18px; " id="linkMobile2" class="required" name="linkMobile2" size="20" value="13900000048 ">
+									传真:
+									<input type="text" style="vertical-align: middle;font-size: 18px; " id="fax" class="required" name="fax" size="10" value="">
+									邮编:
+									<input type="text" style="vertical-align: middle;font-size: 18px; " id="mailCode" class="required" name="mailCode" size="10" value="215153">
+								</p>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+				<table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+
+					<tr>
+						<td colspan="2" style=" height:30px; border-top: 0px;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; "></td>
+					</tr>
+				</table>
+		        <br>
+		        <!--               回执联      -->                            
+			<table id="letter3" style=" text-align: center; font-size:16px; " width="100%" cellspacing="1" cellpadding="1">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;font-size:22px;font-family: 'stzhongsongregular'">
+							中国共产党党员组织关系介绍信回执联</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td colspan="2" style=" line-height:35px;padding-right:50px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;font-family: '仿宋';font-size: 18px;">
+							第<input type="text" id="letterCode3" class="required" style="vertical-align: middle;font-size: 18px; " name="letterCode3" size="15" value="N2018001">号
+						</td>
+						<td rowspan="6" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;font-family: '仿宋';font-size: 16px;">
+							<br>第<br><br>三<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px;float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;font-family: '仿宋';">
+							&nbsp;&nbsp;<input type="text" id="approveOrg3" class="required" placeholder="原机构名称" style="vertical-align: middle;font-size: 18px; " size="40" value="中共卓望信息技术（北京）有限公司委员会">：
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:60px;border-left:1px solid black;border-bottom:10px;border-top:10px;border-right:0px;font-family: '仿宋';font-size: 18px;">
+						&nbsp;&nbsp;
+							<input type="text" id="partyMembName3" class="required" style="vertical-align: middle;font-size: 18px; " name="partyMembName3" size="20" value="李玉">
+							等同志的党员组织关系已转达我处，特此回复。
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td style="line-height:20px; border-top:10px;border-bottom:10px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right;font-family: '仿宋';font-size: 18px; ">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="line-height:40px;border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;font-family: '仿宋';">
+							<p style=" float:right; font-size: 18px">
+							<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateYear3" name="fillDateYear3" size="5" value="2018">年
+							<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateMonth3" name="fillDateMonth3" size="5" value="1">月
+							<input type="text" style="vertical-align: middle;font-size: 18px; " id="fillDateDay3" name="fillDateDay3" size="5" value="4">日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;padding-bottom:20px;padding-left:10px;">
+							<p style=" float:left;font-family: '仿宋';font-size: 18px; ">
+								经办人:
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="operator" name="operator" size="10" value="刘强" >
+								&nbsp;&nbsp;&nbsp;联系电话：
+								<input type="text" style="vertical-align: middle;font-size: 18px; " id="linkMobile3" name="linkMobile3" size="20" value="17334541234">
+								&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+
+					
+				</tbody>
+			</table>
+				<table style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+					<tr style="border-left: 0">
+						<td colspan="2" style=" height:30px; border: 0px; font-family: '仿宋';font-size: 16px;">
+							注：回执联由接收党员组织关系的基层党委在接收党员后一个月内邮寄或传真至党员原所在基层党委。
+						</td>
+					</tr>
+				</table>
+				<p style="text-align: center;margin-top: 40px;margin-top: 40px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #505050;"></p>
+		        		<table  class="table1" style="margin-bottom: 20px;text-align: center;margin-top: 20px;" width="100%" cellspacing="0"
+					cellpadding="0"  >
+					
+						 <tr>
+							<td colspan="11" style="text-align:center;">整建制转移组织关系党员名单</td>
+						</tr>
+						<tr>
+		                  		<td class="center">序号</td>
+								<td class="center">姓名</td>
+								<td class="center">性别</td>
+								<td class="bianji">年龄</td>
+								<td class="center">民族</td>
+								<td class="center">正式/预备</td>
+								<td class="center">身份证号</td>
+								<td class="center">转出单位</td>
+								<td class="center">转入单位</td>
+								<td class="center">党费交纳截止时间</td>
+								<td class="center">联系电话</td>
+						 </tr>
+						
+		                  <tr>
+		                  		<td class="center">1</td>
+								<td class="center">王红</td>
+								<td class="center">女</td>
+								<td class="center">32</td>
+								<td class="center">汉</td>
+								<td class="cneter">正式</td>
+								<td class="center">511721198112257124</td>
+								<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+								<td class="center">中共中国移动学院委员会</td>
+								<td class="center">2017-12</td>
+								<td class="center">13900000048</td>
+						 </tr>
+		                   <tr>
+		                  		<td class="center">2</td>
+								<td class="center">李玉</td>
+								<td class="center">男</td>
+								<td class="center">32</td>
+								<td class="center">汉</td>
+								<td class="cneter">正式</td>
+								<td class="center">511731194112257124</td>
+								<td class="center">中共卓望信息技术（北京）有限公司委员会</td>
+								<td class="center">中共中国移动学院委员会</td>
+								<td class="center">2017-12</td>
+								<td class="center">13900000048</td>
+						 </tr>
+	       
+				</table>
+			
+			</form>
+			
+	   </div>
+    	</div>
+    </div>
+    <div class="back_node">
+    	<input type="radio" name="back_node">&nbsp;&nbsp;退回上一节点&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="back_node">&nbsp;&nbsp;审批终止
+        <a class="m2fm_a1" href="javascript:" style="float: right;margin-top: 36px;" onclick="hideDiv_o('back_node')">关闭</a>
+    	<a class="m2fm_a1 m2fm_a2" href="javascript:" style="float: right;margin-top: 36px;margin-right:20px;" onclick="hideDiv_o('back_node')">确定</a>
+
+    </div>
+    <script type="text/javascript" src="lib/jquery.min_1_9_1.js"></script>
+    <script type="text/javascript" src="lib/easy-ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="lib/common.js"></script>
+
+   <script>
+   	function record_next(location){
+   		window.location.href=location+'?tabId='+getParameter('tabId');
+   	}
+   	function no_product(){
+   		alert('介绍信未生成!');
+   	}
+   $('#return_letter').click(function(event) {
+   	/* Act on the event */
+   	$('.back_node').show();
+   });
+   	$(function(){
+        if(getParameter('tabId')!=0){
+          $('.noQuan').hide();
+		}
+	})
+
+    $('#state').change(function(event) {
+        /* Act on the event */
+        $(this).next().attr('placeholder','请输入'+$(this).find('option:selected').val()+'搜索');
+    });
+
+
+    $('#state1').change(function(event) {
+        /* Act on the event */
+        $(this).next().attr('placeholder','请输入'+$(this).find('option:selected').val()+'搜索');
+    });
+    var ckflag = false;
+    $(".model_check").bind("mouseover",function (event) {
+        if(ckflag == true){
+            ckflag = false;
+        }
+        console.log($(this).children(":checkbox").is(':checked'));
+        if($(this).children(":checkbox").is(':checked')){
+            $(this).children(":checkbox").prop("checked",false);
+        }
+        else {
+            $(this).children(":checkbox").prop("checked",true);
+        }
+        event.stopPropagation();
+    }).bind("mouseout",function(event){
+        if(ckflag == true){
+            return;
+		}
+        console.log($(this).children(":checkbox").is(':checked'));
+        if($(this).children(":checkbox").is(':checked')){
+            $(this).children(":checkbox").prop("checked",false);
+        }
+        else {
+            $(this).children(":checkbox").prop("checked",true);
+        }
+        event.stopPropagation();
+	}).bind("click",function(event){
+        console.log($(this).children(":checkbox").is(':checked'));{
+            $(this).children(":checkbox").prop("checked",true);
+            ckflag = true;
+            event.stopPropagation();
+		}
+
+
+        if($(this).children(":checkbox").is(':checked')){
+            event.stopPropagation();
+//            $(this).children(":checkbox").prop("checked",true);
+        }
+        else {
+            event.stopPropagation();
+//            $(this).children(":checkbox").prop("checked",false);
+		}
+
+	})
+   </script>
+</body>
+</html>

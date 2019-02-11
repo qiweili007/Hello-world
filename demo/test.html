@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/jquery.min_1_9_1.js"></script>
+
+    <script>
+        var p = {x:1};//定义一个原型对象
+        var o = Object.create(p);//使用这个原型创建一个对象
+    </script>
+</head>
+<body>
+<div id="player">
+    <button id="clickme" onclick="alert('hello \n test')">click me</button>
+    <input type="text" value="212" />
+</div>
+
+</body>
+</html>

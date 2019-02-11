@@ -1,0 +1,1085 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>中国移动党建管理平台</title>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="renderer" content="webkit|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="css/header.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="lib/easy-ui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="lib/easy-ui/themes/icon.css">
+<!--[if IE 9]>
+  <script src='/assets/lib/ueditor-1.4.3.2/ueditor.config.js'></script>
+  <script src='/assets/lib/ueditor-1.4.3.2/ueditor.all.min.js'></script>
+  <script src='/assets/lib/ueditor-1.4.3.2/lang/zh-cn/zh-cn.js'></script>
+  <![endif]-->
+<!--[if lte IE 8]>
+  <script type="text/javascript">    
+    //window.onerror = function () { debugger; alert(1) }
+    function getIe2WorkObject() {
+      if (window.__ie2work_activex_object) {
+        return window.__ie2work_activex_object;
+      }
+      try {
+        var ie2work = window.__ie2work_activex_object = new ActiveXObject("Dangjian.Ie2Work");
+
+        return ie2work;
+      }
+      catch (e) {
+        return null;
+      }
+    }
+    function IeChecker() {
+      //WinXP ie8 :"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727)"
+      //win7  ie9 : "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
+      //Win10 ie11: "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; Touch; .NET4.0C; .NET4.0E; .NET CLR 2.0.50727; .NET CLR 3.0.30729; .NET CLR 3.5.30729; Tablet PC 2.0; rv:11.0) like Gecko"
+
+      function ieVersion() {
+        var ua = navigator.userAgent;
+        var reg = /MSIE (\d+(\.\d+))/;
+        var r = reg.exec(ua);
+        if (r == null) return -1;
+        return parseFloat(r[1]);
+      }
+
+      function isNetClr2Installed() {
+        var ua = navigator.userAgent;
+        var reg = /\.NET\s+CLR\s+2\.0/i;
+        return reg.test(ua);
+      }
+
+      function getOsVersion() {
+        var ua = navigator.userAgent;
+        var reg = /Windows\s+NT\s+(\d+(\.\d+))/;
+        var r = reg.exec(ua);
+        if (r == null) return -1;
+        return r[1];
+      }
+
+
+      function isWinXp() {
+        return getOsVersion() == "5.1";
+      }
+
+      function isWin7() {
+        return getOsVersion() == "6.1";
+      }
+
+      return {
+        ieVersion: ieVersion,
+        isWin7: isWin7,
+        isWinXp: isWinXp,
+        isNetClr2Installed: isNetClr2Installed
+      }
+    }
+
+    function tryGoWorkApp() {
+      var ie2work = getIe2WorkObject();
+      if (ie2work == null) {
+        $(function () {
+          $('#info').text("您没有安装党建插件，请下载安装。请同时确保您已经安装Chrome浏览器！");
+          $('#helperIe8').show();
+        })
+      }
+      else {
+        var currProcessName = ie2work.CurrentProcessName || '';
+
+        if (currProcessName.toLowerCase() == "iexplore") {
+          //检查是否安装chrome
+          if (!ie2work.IsChromeInstalled) {
+             $('#info').text("您没有安装Chrome浏览器，请下载安装");
+             $('#helperIe8').show();
+
+          }
+          else {
+            $('#info').text("正在验证身份.....");
+            $.getScript(domainConfig.domainLoginAPI + "login/sso/work", function () {
+              var urlToken = encodeURIComponent(work).replace(/\./g, '$');
+              ie2work.LoginToWork(document.location.href + "ssologin/" + urlToken);
+               $('#info').text("正在进入系统.....");
+              setTimeout(function() {
+                window.opener = null;
+                window.open('', '_self', '');
+                window.close();
+              }, 5000);
+              
+            }).fail(function () {
+              alert('身份认证出错，请重新登陆');
+            });
+          }
+
+
+        }
+        else {
+          //其他双核浏览器？
+          alert("请切换为急速模式");
+        }
+      }
+    }
+
+  </script>
+  <![endif]-->
+ <link href="css/pagination.css" rel="stylesheet" type="text/css" />
+  	<style>
+.m2fm_tabBox .table1{
+border-top: 1px solid black;
+   border-right: 0;
+   border-bottom: 1px solid black;
+}
+.m2fm_tabBox .table1 tr{
+   border-left: 1px solid black;
+}
+.disableClass{background: #ccc;}
+th{
+  border-left: 0;
+  border-right: 0;
+}
+.m2fm_tabBox .table1 td{
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+</style>
+<script type="text/javascript" src="lib/jquery.min_1_9_1.js"></script>
+</head>
+<body onLoad="init()">
+	<div id="root">
+		<div style="width:100%;" >
+			<div >
+				<div class="topBg" >
+					<div class="wrapper" >
+						<a href="javascript:;" class="topOut" >退出登录</a><a
+							href="/users/jbxx?userName=0345656" class="topOut topPerson"
+							style="display:none;" 个人中心</a><a
+							href="" class="top_btn">进入党建云平台</a><span class="topWelcom"><span>欢迎你，</span><span class="topPnm">吕幼敏</span></span>
+					</div>
+				</div>
+				 <div id="headerContent" class="header"></div>
+				<div class="nav" >
+					<ul >
+						<li ><a class="nav_a" href="/"
+							>首 页</a></li>
+						<li ><a class="nav_a"
+							href="/activities?orgID=12792,13257,13258,13259,13265,13278,13289"
+							>党委工作</a></li>
+						<li ><a class="nav_a"
+							href="/activities?orgID=13291" >总支工作</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/orgs" >组织管理</a></li>
+						<li data-reactid=".0.0.2.0.5"><a class="nav_a"
+							href="/activities?orgID=2663" >组织生活</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/partymembers" >党员管理</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/members" >党员发展</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/paymanage/notice"
+							>党费管理</a></li>
+						<li style="display:;" ><a
+							class="nav_a  on" href="/orgtransfer" >组织转接</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/messages" >通知下发</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/meetings" >会议管理</a></li>
+						<li style="display:none;" ><a
+							class="nav_a" href="/tasks" >任务管理</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/analysis" >数据统计</a></li>
+						<li style="display:block;" ><a
+							class="nav_a" href="/search" >综合查询</a></li>
+						<li ><a class="nav_a"
+							href="/users/jbxx?userName=0345656" >个人中心</a></li>
+					</ul>
+				</div>
+				<div class="main2" >
+					<div class="m2pos" >
+						<a class="m2pos_a" href="/" >首页</a><span
+							>&gt;</span><a class="m2pos_a"
+							href="javascript:;" >组织转接</a><span
+							>&gt;</span><span class="m2pos_cut"
+							>组织关系转出</span>
+					</div>
+					<!-- <iframe src="relation_out.html" frameborder="0" width='100%' height="800"></iframe> -->
+
+<!--第一个iframe开始-->
+					<div class="m2fmNav" >
+						<ul >
+							<li><a
+								class="m2fm_a1  m2fm_a3" href="relations_out.html"
+								>组织关系转出</a></li>
+							<li><a class="m2fm_a1"
+								href="javascript:;" onclick="tiaozhuan()">审批记录</a></li>
+						</ul>
+					</div>
+					<div class="mb10">
+						<!--
+                		<select id="state" name="" class="m2fm_int" style="width: 110px;">
+                   		 	<option value="姓名">姓名</option>
+                    		<option value="身份证号">身份证号</option>
+                    		<option value="手机号">手机号</option>
+                		</select>
+                		-->
+                		<input type="text" class="m2fm_int" placeholder="请输入姓名、手机号或者身份证号" style="width: 244px;">
+                		<a href="javascript:;" class="m2fm_a1 m2fm_a2">搜索</a>
+                		<select id="state" name="" class="m2fm_int" style="width: 120px;display:block;margin-top:10px;">
+                   		 	<option value="选择机构">选择机构</option>
+                    		<option value="机构1">机构1</option>
+                    		<option value="机构2">机构2</option>
+                		</select>
+
+           			</div>
+           			<script>
+           				$('#state').change(function(event) {
+           					/* Act on the event */
+           						$(this).next().attr('placeholder','请输入'+$(this).find('option:selected').val()+'搜索');
+           				});
+           			</script>
+           			<div class="layer_t">党员信息</div>
+					<div  class="m2fm_tabBox m2fm_tabBox2"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;" id="add_card">
+						<table width="100%" >
+							<tbody >
+								<tr class="m2th" >
+									<td width="5%" class="center" >序号</td>
+									<td width="5%" class="center" >姓名</td>
+									<td width="5%" class="center" >性别</td>
+									<td width="10%" class="center" >正式/预备</td>
+									<td width="20%" class="center" >身份证号</td>
+									<td width="25%" class="center">所属党组织</td>
+									<td width="15%" class="center">党费交至</td>
+									<td width="15%" class="center">操作</td>
+								</tr>
+								<tr >
+									<td>1</td>
+									<td>强月悦</td>
+									<td>男</td>
+									<td>正式</td>
+									<td>130181199508246578</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td>2017-12</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="businessHandling($(this),'0');" >办理转出</a>
+									</td>
+								</tr>
+								<tr >
+									<td>2</td>
+									<td>孙红</td>
+									<td>女</td>
+									<td>正式</td>
+									<td>130181199308243457</td>
+									<td>中共卓望信息技术（北京）有限公司委员会	</td>
+									<td>2017-08</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="businessHandling($(this),'1');" >办理转出</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div id="pagination_1"><div class="whj_jqueryPaginationCss-1"><div class="whj_border whj_padding whj_bgc whj_hoverDisable" name="whj_firstPage">首页</div><div class="whj_border whj_padding whj_bgc whj_hoverDisable" name="whj_previousPage">上一页</div><div class="whj_border whj_padding whj_bgc whj_checked" name="whj_page" data-page="1">1</div><div class="whj_border whj_padding whj_bgc whj_hoverDisable" name="whj_nextPage">下一页</div><div class="whj_border whj_padding whj_bgc whj_hoverDisable" name="whj_lastPage">尾页</div><select class="whj_border whj_bgc whj_hover" name="whj_pageSize"><option value="5">5条/页</option><option value="10" selected="">10条/页</option><option value="15">15条/页</option><option value="20">20条/页</option></select><div class="whj_padding whj_color">跳至</div><input type="text" class="whj_border whj_color" name="whj_toPage"><div class="whj_border whj_padding whj_bgc whj_hover" name="whj_confirm">确认</div><div class="whj_border whj_padding whj_bgc whj_hover" name="whj_refresh">刷新</div><div class="whj_padding whj_color">共1页</div></div></div>
+
+
+					<div class="layer_t">待转出名单</div>
+				    <div  class="m2fm_tabBox m2fm_tabBox2 mt20"
+						style="position:relative;top:0px;left:0px;border-top:2px solid #f8ebc8;" id="out_card">
+						<table width="100%" >
+							<thead>
+								<tr class="m2th" >
+									<td width="2%" class="center" >序号</td>
+									<td width="5%" class="center" >姓名</td>
+									<td width="3%" class="center" >性别</td>
+									<td width="10%" class="center" >正式/预备</td>
+									<td width="15%" class="center" >身份证号</td>
+									<td width="20%" class="center">所属党组织</td>
+									<td width="20%" class="center">目标党组织</td>
+									<td width="10%" class="center">党费交至</td>
+									<td width="24%" class="center">操作</td>
+								</tr>
+							</thead>
+							<tbody  id="outDyList">
+								<tr style="display: none;">
+									<td>1</td>
+									<td>强月悦</td>
+									<td>男</td>
+									<td>正式</td>
+									<td>130181199508246578</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td></td>
+									<td>2017-12</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('modify',1)">修改</a>
+										<a class="m2fm_abtn" href="javascript:;">删除</a>
+									</td>
+								</tr>
+								<tr style="display: none;">
+									<td>2</td>
+									<td>孙红</td>
+									<td>女</td>
+									<td>正式</td>
+									<td>130181199308243457</td>
+									<td>中共卓望信息技术（北京）有限公司委员会</td>
+									<td></td>
+									<td>2017-08</td>
+									<td>
+										<a class="m2fm_abtn" href="javascript:;" onclick="showDiv('modify',1)">修改</a>
+										<a class="m2fm_abtn" href="javascript:;">删除</a>
+									</td>
+								</tr>
+							</tbody>
+							</thead>
+						</table>
+						<p  style="line-height:38px;">无待转出人员！</p>
+					</div>
+				   <script type="text/javascript">
+				   		function businessHandling(obj,num){
+				   			if($('#add_card table tr').length<=2){
+                                 $('#add_card').append('<p style="line-height:38px;">无办理转出人员！</p>')
+				   			}
+				   			$('#out_card').find('p').hide();
+                            $(obj.parents('tr').get(0).cells[7]).find("a").addClass("disableClass");
+                            $('#out_card table tr').eq(parseInt(num)+1).show();
+				   		}
+				   </script>
+					<div style="float: right;margin-top: 50px;">
+						<div id="showSelectedOrg" style="display: none;margin-bottom: 20px;">您选中的机构是：<label id="showSelectedOrgName">转接测试支部1</label> </div>
+						<a href="javascript:;" class='m2fm_a1 m2fm_a2' onclick="showDiv('trees',1)">选择目标组织</a>
+						<!-- <a href="javascript:;" class='m2fm_a1 m2fm_a2'>暂存</a> -->
+						<a href="javascript:;" class='m2fm_a1' id="nextOp">下一步</a>
+					</div>
+				</div>
+					<!--<div id="letter_create" class="m2fm_tabBox" style="display: block;position:relative;top:20px;left:0px;border-top:2px solid #f8ebc8;padding-bottom: 20px;margin-bottom: 20px;">
+  
+   		<form id="form_letter" onsubmit="return false" action="##" method="post">
+   		<input type="hidden" id="taskId" name="taskId">
+   		<input type="hidden" id="letterType" name="letterType">
+   		
+   	
+			<table id="letter1" style=" text-align: center;" width="100%" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th colspan="6" style="text-align: center;border-top:0px;border-left:0px;border-right:0px;border-bottom: 0px;font-size: 22px;font-weight: bold;">
+							中国共产党党员组织关系介绍信</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td rowspan="3" style="width: 40px;border-top: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;border-right:1px solid black;"><label>党<br>员<br>介<br>绍<br>信<br>存<br>根
+						</label></td>
+						<td colspan="3" style=" line-height:30px;padding-right:60px; text-align: right;border-top:1px solid black;border-left:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode1" name="letterCode1" size="10" value="N2018001">号
+						</td>
+						<td rowspan="3" style="width: 40px;border-left:0px;border-right:1px dashed;border-top:1px dashed;border-bottom:1px dashed;border-left:1px solid black;">第<br>一<br>联
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:left;padding-top:50px;padding-left:20px;padding-bottom:50px;border-left:2px;border-top:0px; border-bottom:0px;" colspan="3">
+							<p style="line-height:38px;">
+							   &nbsp; &nbsp; &nbsp;<input type="text" id="partyMembName1" name="partyMembName1" style="width: 100px;text-align: center;" size="10" value="强月悦">同志系中共
+							<input type="text" placeholder="党员/预备党员" id="partyMembType1" name="partyMembType1" size="8" value="正式党员">
+							，组织关系由 <input type="text" placeholder="原组织机构" id="fromOrg1" name="fromOrg1" size="30" value="四川中移全通"> 转到 <input type="text" id="toOrg1" name="toOrg1" placeholder="目标组织机构" size="30" value="河北中移全通">。
+							</p>
+							</td>
+					</tr>
+					<tr>
+						<td colspan="3" style="line-height:40px;padding-right:60px; text-align: right;border-left:0px;border-top:0px;border-bottom: 1px solid black;">
+							<input type="text" id="fillDateYear1" name="fillDateYear1" size="5" value="2018">年 <input type="text" id="fillDateMonth1" name="fillDateMonth1" size="5" value="1">月 <input type="text" id="fillDateDay1" name="fillDateDay1" size="5" value="4">日
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6" style=" line-height:40px; text-align: center;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; border-top:0px;">
+							（贴回执联处）</td>
+					</tr>
+				</tbody>
+			</table>
+				
+			
+				<table id="letter2" style=" text-align: center; font-size:14px;margin-top:40px; " width="100%" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th colspan="2" style="text-align: center;border:0px;font-size: 22px;font-weight: bold;" >
+								中国共产党党员组织关系介绍信</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							
+							<td style=" line-height:30px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;">
+								第<input type="text" id="letterCode2" class="required" style="vertical-align: middle; " name="letterCode2" size="15" value="N2018001">号
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</td>
+							<td rowspan="8" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">
+								<br>第<br><br>二<br><br>联<br>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style=" line-height:30px; float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+								&nbsp;&nbsp;<input type="text" id="approveOrg2" class="required" name="approveOrg2" size="30" value="四川中移全通">：
+							</td>
+						</tr>
+						<tr>
+							<td style=" line-height:30px;border-left:1px solid black;padding-left:20px;padding-right:20px;padding-top:30px;padding-bottom:30px;border-bottom:0px;border-top:0px;border-right:0px;">
+							    <p style="line-height:38px;text-align:left;">
+							       &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="partyMembName2" class="required" name="partyMembName2" size="20" value="强月悦">
+								同志,
+								<input type="text" id="sex" class="required" placeholder="性别" name="sex" size="5" value="男">
+								，
+								<input type="text" id="age" class="required" placeholder="年龄" name="age" size="5" value="31">
+								岁，
+								<input type="text" id="nation" class="required" name="nation" size="5">
+								族，系中共
+								<input type="text" id="partyMembType2" placeholder="党员/预备党员" class="required" name="partyMembType2" size="5" value="正式党员">
+								，
+								&nbsp;&nbsp;身份证号码
+								<input type="text" id="idcardnum" class="required" name="idcardnum" size="20" value="511721198112257124">
+								，由
+								<input type="text" id="fromOrg2" class="required" placeholder="原机构名称" name="fromOrg2" size="30" value="四川中移全通">
+								转去
+								<input type="text" id="toOrg2" class="required" placeholder="目标机构名称" name="toOrg2" size="30" value="河北中移全通">
+								，请转接组织关系。该同志党费已交到
+								<input type="text" id="payDateYear" class="required" name="payDateYear" size="5" value="2017">
+								年
+								<input type="text" id="payDateMonth" class="required" name="payDateMonth" size="5" value="12">
+								月
+								。<br>（有效期
+								<input type="text" id="validDate" class="required" placeholder="7/15/30" name="validDate" size="5" value="60">
+								天）<br>
+							    </p>
+								
+							</td>
+						</tr>
+						<tr>
+							<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								
+								<p style=" float:right; ">
+									（盖章）
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+								
+							</td>
+						</tr>
+						<tr>
+							<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+								<p style=" float:right; ">
+								<input type="text" id="fillDateYear2" class="required" name="fillDateYear2" size="5" value="2018">年
+								<input type="text" id="fillDateMonth2" class="required" name="fillDateMonth2" size="5" value="1">月
+								<input type="text" id="fillDateDay2" class="required" name="fillDateDay2" size="5" value="4">日
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-top:0px;border-left:1px solid black;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:38px;padding-left:20px; ">
+									党员联系电话或其他联系方式：
+									<input type="text" id="phoneNum22" class="required" name="phoneNum22" size="20" value="13900000048">
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td class="tdborderleft" style="border-left:1px solid black;border-top:0px;border-bottom:0px;border-right:0px;">
+								<p style=" float:left;line-height:38px;padding-left:20px; ">
+								党员原所在基层党委通讯地址：
+								<input type="text" id="commiteAddress" class="required" name="commiteAddress" size="40" value="四川中移全通">
+								</p>
+							</td>
+						</tr>
+						<tr>
+							<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;">
+								<p style=" float:left;line-height:38px; padding-left:20px;padding-bottom:30px;">
+									联系电话：
+									<input type="text" id="linkMobile2" class="required" name="linkMobile2" size="20" value="13900000048 ">
+									&nbsp;&nbsp;&nbsp;传真:
+									<input type="text" id="fax" class="required" name="fax" size="10" value="">
+									&nbsp;&nbsp;&nbsp;邮编:
+									<input type="text" id="mailCode" class="required" name="mailCode" size="10" value="215153">
+								</p>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style=" height:30px; border-top: 0px;border-left: 0px;border-right: 0px;border-bottom:1px dashed black; "></td>
+						</tr>
+					</tbody>
+				</table>
+		        <br>
+		                              
+			<br><br><table id="letter3" style=" text-align: center; font-size:16px; " width="100%" cellspacing="1" cellpadding="1">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;border:0px;">
+							中国共产党党员组织关系介绍信回执联</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						
+						<td style=" line-height:30px; text-align: right;vertical-align: middle;border-top:1px solid black;border-left:1px solid black;border-right:0px; border-bottom:0px;">
+							第<input type="text" id="letterCode3" class="required" style="vertical-align: middle; " name="letterCode3" size="15" value="N2018001">号
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</td>
+						<td rowspan="6" style="width: 40px;border-left:1px solid black;border-right:1px dashed black;border-top:1px dashed black;border-bottom:1px dashed black;">
+							<br>第<br><br>三<br><br>联<br>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style=" line-height:30px;float:left; border-left:1px solid black;border-right:0px;border-top:0px;border-bottom:0px;">
+							&nbsp;&nbsp;<input type="text" id="approveOrg3" class="required" placeholder="原机构名称" name="approveOrg3" size="30" value="四川中移全通">：
+						</td>
+					</tr>
+					<tr>
+						<td style=" line-height:30px;border-left:1px solid black;border-bottom:0px;border-top:0px;border-right:0px;">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="text" id="partyMembName3" class="required" name="partyMembName3" size="20" value="李玉">
+							同志的党员组织关系已转达我处，特此回复。
+							<br>
+						</td>
+					</tr>
+					<tr>
+						<td style=" border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							
+							<p style=" float:right; ">
+								（盖章）
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+							
+						</td>
+					</tr>
+					<tr>
+						<td style="border-top:0px;border-bottom:0px;border-right:0px;border-left:1px solid black;">
+							<p style=" float:right; ">
+							<input type="text" id="fillDateYear3" name="fillDateYear3" size="5" value="2018">年
+							<input type="text" id="fillDateMonth3" name="fillDateMonth3" size="5" value="1">月
+							<input type="text" id="fillDateDay3" name="fillDateDay3" size="5" value="4">日
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr>
+						<td style="border-left:1px solid black;border-bottom:1px solid black;border-right:0px;border-top:0px;padding-bottom:20px;padding-left:10px;">
+							<p style=" float:left; ">
+								经办人:
+								<input type="text" id="operator" name="operator" size="10" value="刘强">
+								&nbsp;&nbsp;&nbsp;联系电话：
+								<input type="text" id="linkMobile3" name="linkMobile3" size="20" value="17334541234">
+								&nbsp;&nbsp;&nbsp;
+							</p>
+						</td>
+					</tr>
+					
+					<tr style="border-left: 0">
+						<td colspan="2" style=" height:30px; border: 0px; ">
+							注：回执联由接收党员组织关系的基层党委在接收党员后一个月内邮寄或传真至党员原所在基层党委。	
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+			<p style="text-align: center;">
+				<button type="button" id="saveBtn" onclick="saveLetter();" class="btn-blue" data-icon="save">保存</button> 
+				<button type="button" onclick="hideletterpage();" class="btn-blue" data-icon="save">关闭</button>
+			   			</p> 
+
+
+
+   			<table  class="table1" style=" text-align: center;margin-top: 20px;" width="100%" cellspacing="0"
+				cellpadding="0"  >
+				
+					 <tr>
+						<td colspan="11" style="text-align:center;">整建制转移组织关系党员名单</td>
+					</tr>
+					<tr>
+	                  		<td class="center">序号</td>
+							<td class="center">姓名</td>
+							<td class="center">性别</td>
+							<td class="center">年龄</td>
+							<td class="center">民族</td>
+							<td class="center">正式/预备</td>
+							<td class="center">身份证号</td>
+							<td class="center">转出单位</td>
+							<td class="center">转入单位</td>
+							<td class="center">党费交纳截止时间</td>
+							<td class="center">联系电话</td>
+					 </tr>
+					
+	                  <tr>
+	                  		<td class="center">1</td>
+							<td class="center">王红</td>
+							<td class="center">女</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511721198112257124</td>
+							<td class="center">四川中移全通</td>
+							<td class="center">河北中移全通</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+	                   <tr>
+	                  		<td class="center">2</td>
+							<td class="center">李玉</td>
+							<td class="center">男</td>
+							<td class="center">32</td>
+							<td class="center">汉</td>
+							<td class="cneter">正式</td>
+							<td class="center">511731194112257124</td>
+							<td class="center">四川中移全通</td>
+							<td class="center">河北中移全通</td>
+							<td class="center">2017-12</td>
+							<td class="center">13900000048</td>
+					 </tr>
+       
+			</table>
+		</form>
+		
+   </div>-->
+   
+
+   
+
+<!--第一个iframe结束-->
+
+
+				</div>
+				<div >
+					<div id="g3w-loading" class="g3w-loading" >
+						<div class="g3w-inner-loading" >
+							<span class="g3w-loading" ><i
+								></i><i
+								></i><i
+								></i></span>
+						</div>
+						<div class="loading-mask" ></div>
+					</div>
+					<div id="g3w-windows-mask" class="g3w-windows-mask"
+						></div>
+				</div>
+			</div>
+			<div class="footerBg" style="width:100%;" >
+				<div class="footer" style="margin-top: 50px; auto;width:1025px;"
+					>
+					<a class="cor_bs" href="/help" >使用帮助</a><span
+						data-reactid=".0.1.0.1">&nbsp; 中国移动通信集团有限公司版权所有 &nbsp;
+						京ICP备05002571号-1</span>
+				</div>
+			</div>
+		</div>
+	</div>
+    
+    <div class="diogle"></div>
+	<!--修改弹层-->
+    <div class="modify">
+    	<div class="layer_t">修改党员信息</div>
+    	<div class='table_input'>
+    		<table cellpadding="5">
+				<tbody>
+					<tr>
+						<td align="right" class="tdFix">姓名:</td>
+						<td><input class="m2fm_int m2fm_int2" type="text" value="强悦月" style="width: 100px"></td>
+						<td align="right" class="tdFix">性别:</td>
+						<td>
+							<select name="" id="" class="m2fm_int" style="width: 60px;">
+								<option value="男">男</option>
+								<option value="女">女</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td align="right" class="tdFix">年龄:</td>
+						<td><input class="m2fm_int" type="text" value="32" style="width: 26px;">&nbsp;&nbsp;岁</td>
+						<td align="right" class="tdFix">联系电话:</td>
+						<td><input class="m2fm_int m2fm_int2" type="text" value="13581544323"></td>
+						
+					<tr>
+						<td align="right" class="tdFix">民族:</td>
+						<td>
+							<select name="" id="nation" class="m2fm_int" style="width: 120px;">
+								<option value="1">汉</option>
+								<option value="2">蒙古</option>
+								<option value="3">回</option>
+								<option value="4">藏</option>
+								<option value="5">维吾尔</option>
+								<option value="6">苗</option>
+								<option value="7">彝</option>
+								<option value="8">壮</option>
+								<option value="9">布依</option>
+								<option value="10">朝鲜</option>
+								<option value="11">满</option>
+								<option value="12">侗</option>
+								<option value="13">瑶</option>
+								<option value="14">白</option>
+								<option value="15">土家</option>
+								<option value="16">哈尼</option>
+								<option value="17">哈萨克</option>
+								<option value="18">傣</option>
+								<option value="19">黎</option>
+								<option value="20">傈僳</option>
+								<option value="21">佤</option>
+								<option value="22">畲</option>
+								<option value="23">高山</option>
+								<option value="24">拉祜</option>
+								<option value="25">水</option>
+								<option value="26">东乡</option>
+								<option value="27">纳西</option>
+								<option value="28">景颇</option>
+								<option value="29">柯尔克孜</option>
+								<option value="30">土</option>
+								<option value="31">达斡尔</option>
+								<option value="32">仫佬</option>
+								<option value="33">羌</option>
+								<option value="34">布朗</option>
+								<option value="35">撒拉</option>
+								<option value="36">毛南</option>
+								<option value="37">仡佬</option>
+								<option value="38">锡伯</option>
+								<option value="39">阿昌</option>
+								<option value="40">普米</option>
+								<option value="41">塔吉克</option>
+								<option value="42">怒</option>
+								<option value="43">乌孜别克</option>
+								<option value="44">俄罗斯</option>
+								<option value="45">鄂温克</option>
+								<option value="46">德昂</option>
+								<option value="47">保安</option>
+								<option value="48">裕固</option>
+								<option value="49">京</option>
+								<option value="50">塔塔尔</option>
+								<option value="51">独龙</option>
+								<option value="52">鄂伦春</option>
+								<option value="53">赫哲</option>
+								<option value="54">门巴</option>
+								<option value="55">珞巴</option>
+								<option value="56">基诺</option>
+							</select>&nbsp;&nbsp;族
+						</td>
+						
+						<td align="right" class="tdFix">身份证号:</td>
+						<td><input class="m2fm_int m2fm_int2" type="text" value="130181199509231234"></td>
+					</tr>
+					<tr>
+						<td align="right" class="tdFix">政治面貌:</td>
+						<td>
+							<select name="" id="" class="m2fm_int" style="width: 150px;">
+								<option value="正式">正式</option>
+								<option value="预备">预备</option>
+							</select>
+						</td>
+						<td align="right" class="tdFix">党费交纳截止:</td>
+<!--
+						<td><input class="m2fm_int m2fm_int2" type="text" value="2017" style="width: 60px;">&nbsp;&nbsp;年&nbsp;&nbsp;<input class="m2fm_int m2fm_int2" type="text" value="12" style="width: 60px;">&nbsp;&nbsp;月</td>
+-->
+						<td>
+							<select class="m2fm_int3 m2fm_int2" id="year" onChange="swap_day()"></select>年
+							<select class="m2fm_int3 m2fm_int2" id="month" onChange="swap_day()"></select>月
+							<!--<select id="day"></select>日-->
+
+						</td>
+
+					</tr>
+					<tr>
+						<td align="right" class="tdFix">所在支部:</td>
+						<td colspan="3"><input class="m2fm_int m2fm_int2" type="text" value="产品事业部党支部" style="width: 100%;"></td>
+					</tr>
+					<tr>
+						<td align="right" class="tdFix">所在党委:</td>
+						<td colspan="3"><input class="m2fm_int m2fm_int2" type="text" value="中共中国通信集团公司政企客户分公司委员会" style="width: 100%;"></td>
+						
+					</tr>
+					<tr>
+						<td colspan="4" class="text-right">
+							<a href="javascript:;" class='m2fm_a1 m2fm_a2' onclick="hideDiv('modify')">保存</a>
+						    <a href="javascript:;" class="m2fm_a1" onclick="hideDiv('modify')">取消</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+    	</div>
+    </div>
+    <!--树的弹层-->
+  <div class="trees">
+    <div class="layer_t">选择目标组织</div>
+
+    <div class="defined-tree">
+    	<div class="title_def">组织内转入</div>
+        <div class="easyui-panel" style="padding:10px">
+            <ul  id="userTree" class="easyui-tree" data-options="method:'get',animate:true,checkbox:true,cascadeCheck:false,nocheck:true,onlyLeafCheck: false">
+                <li>
+                    <span>转接测试支部1</span>
+                </li>
+                <li>
+                    <span>转接测试支部2</span>
+                </li>
+                <li>
+                    <span>转接测试党委2</span>
+                    <ul data-options="state:'closed'">
+                        <li>
+                           <span>转接测试支部1</span>
+                        </li>
+                        <li>
+                            <span>转接测试支部2</span>
+                        </li>
+                        <li>
+                           <span>转接测试党委2</span>
+                        </li>
+                        <li>
+                            <span>转接测试党委3</span>
+                        </li>
+                        <li>
+                            <span>转接测试总支1</span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span>转接测试党委3</span>
+                    <ul data-options="state:'closed'">
+                        <li>
+                            <span class="tree-title">转接测试支部1</span>
+                        </li>
+                        <li>
+                           <span class="tree-title">转接测试支部2</span>
+                        </li>
+                        <li>
+                            <span class="tree-title">转接测试党委2</span>
+                        </li>
+                        <li>
+                           <span class="tree-title">转接测试党委3</span>
+                        </li>
+                        <li>
+                            <span class="tree-title">转接测试总支1</span>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="tree-title">转接测试总支1</span>
+                </li>
+            </ul>
+           
+           
+        </div>
+        <div class="title_def">转出组织外</div>
+        <div>
+        	请输入要转出的组织：<input type="text" class="m2fm_int m2fm_int2" id="outzu">
+        </div>
+
+    </div>
+    	<div class="text-right">
+    		<a href="javascript:;" class="m2fm_a1 m2fm_a2 mt20" onclick="next()">确定</a>
+    		<a href="javascript:;" class="m2fm_a1 mt20" onclick="hideDiv('trees')">取消</a>
+    	</div>
+    	
+    </div>
+
+    
+    <script type="text/javascript" src="lib/easy-ui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="lib/common.js"></script>
+    <script>
+    	
+    	function next(){
+            var selRowsIn = $('#userTree').tree('getSelected');
+            var retValue = '';
+            if($('.tree-checkbox1').length||$('#outzu').val()){
+              $('.trees,.diogle').hide();
+              //$('#nextOp').attr('href','record.html?tabId='+getParameter('tabId'))
+              $('#nextOp').attr('types','1');
+              //$('#nextOp').css('background','#e08400');
+				$("#nextOp").addClass("m2fm_a2");
+            }
+            else{
+              alert('必须选择其中一项');
+            }
+            $("#showSelectedOrg").show();
+			if(selRowsIn!=undefined){
+                retValue = selRowsIn.text;
+			}
+            else {
+                retValue = $("#outzu").val();
+            }
+            $("#outDyList tr").each(function(i){
+                $(this).get(0).cells[6].innerHTML = retValue;
+			});
+    	}
+    	$('#nextOp').click(function(event) {
+    		/* Act on the event */
+    		if($(this).attr('types')==1){
+               //alert('张三同志，你好，您有党建组织关系待办工作未处理，请与近期登陆党建系统进行办理。');
+               window.location.href='record.html?tabId='+getParameter('tabId');
+    		}
+    	});
+    	function tiaozhuan(){
+            window.location.href='record.html?tabId='+getParameter('tabId');
+		}
+    	$(function(){
+    		//$('.li1').click();
+    		//$('#href_v').trigger("click");
+    		//var flag=0;
+			if(!getParameter('tabId')){
+			   window.location.href="relations_out.html?tabId=0";
+			}
+
+    		//window.location.href="relations_out.html?tabId=0";
+
+    		$('.defined-tree .easyui-panel').css({'width':'auto','padding':'10px'});
+
+            $('.tree-checkbox').click(function(event) {
+            	$('.tree-checkbox1').removeClass('tree-checkbox1');
+            	$('.tree-checkbox').addClass('tree-checkbox0');
+            });
+    		$('#userTree').tree({
+            onlyLeafCheck : false,
+            nocheck:true,
+            checkbox : true,
+            cascadeCheck:false,
+            onSelect: function (node) {
+               // $('.tree-checkbox').removeClass('tree-checkbox1').addClass('tree-checkbox0');
+                            var cknodes = $('#userTree').tree("getChecked");
+                for (var i = 0; i < cknodes.length; i++) {
+                    if (cknodes[i].domId != node.domId )
+ 					{
+                        $('#userTree').tree("uncheck", cknodes[i].target);
+                    }
+                }
+                if (node.checked) {
+                    $('#userTree').tree('uncheck', node.target);
+                    $('#userTree').find(".tree-node-selected").removeClass("tree-node-selected");
+                } else {
+                    $('#userTree').tree('check', node.target);
+                }
+
+
+            }
+            	 })
+    	})
+
+        var month_big = new Array("1","3","5","7","8","10","12"); //包含所有大月的数组
+        var month_small = new Array("4","6","9","11"); //包含所有小月的数组
+
+        //页面加载时调用的初始化select控件的option的函数
+        function init()
+        {
+            var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+            var select_month = document.getElementById("month"); //获取id为"month"的下拉列表框
+            var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+
+            //将年份选项初始化，从1980到2000
+            for(var i = 2018; i >= 2008; i--)
+            {
+                select_year_option = new Option(i, i);
+                select_year.options.add(select_year_option);
+            }
+			var self=0;
+            //将月份选项初始化，从1到12
+            for(var i = 1; i <= 12; i++)
+            {
+                self+=i;
+                select_month_option = new Option(i, self);
+                select_month.options.add(select_month_option);
+            }
+
+            //调用swap_day函数初始化日期
+            swap_day();
+        }
+        //判断数组array中是否包含元素obj的函数，包含则返回true，不包含则返回false
+        function array_contain(array, obj)
+        {
+            for (var i = 0; i < array.length; i++)
+            {
+                if (array[i] === obj)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        //根据年份和月份调整日期的函数
+        function swap_day()
+        {
+            var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+            var select_month = document.getElementById("month"); //获取id为"month"的下拉列表框
+            var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+
+            select_day.options.length = 0; //在调整前先清空日期选项里面的原有选项
+            var month = select_month.options[select_month.selectedIndex].value; //获取被选中的月份month
+
+            //如果month被包含在month_big数组中，即被选中月份是大月，则将日期选项初始化为31天
+            if(array_contain(month_big, month))
+            {
+                for(var i = 1; i <= 31; i++)
+                {
+                    select_day_option = new Option(i, i);
+                    select_day.options.add(select_day_option);
+                }
+            }
+
+            //如果month被包含在month_small数组中，即被选中月份是小月，则将日期选项初始化为30天
+            else if(array_contain(month_small, month))
+            {
+                for(var i = 1; i <= 30; i++)
+                {
+                    select_day_option = new Option(i, i);
+                    select_day.options.add(select_day_option);
+                }
+            }
+
+            //如果month为2，即被选中的月份是2月，则调用initFeb()函数来初始化日期选项
+            else
+            {
+                initFeb();
+            }
+        }
+        //判断年份year是否为闰年，是闰年则返回true，否则返回false
+        function isLeapYear(year)
+        {
+            var a = year % 4;
+            var b = year % 100;
+            var c = year % 400;
+            if( ( (a == 0) && (b != 0) ) || (c == 0) )
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //根据年份是否闰年来初始化二月的日期选项
+        function initFeb()
+        {
+            var select_year = document.getElementById("year"); //获取id为"year"的下拉列表框
+            var select_day = document.getElementById("day"); //获取id为"day"的下拉列表框
+            var year = parseInt(select_year.options[select_year.selectedIndex].value); //获取被选中的年份并转换成Int
+
+            //如果是闰年，则将日期选项初始化为29天
+            if(isLeapYear(year))
+            {
+                for(var i = 1; i <= 29; i++)
+                {
+                    select_day_option = new Option(i, i);
+                    select_day.options.add(select_day_option);
+                }
+            }
+
+            //如果不是闰年，则将日期选项初始化为28天
+            else
+            {
+                for(var i = 1; i <= 28; i++)
+                {
+                    select_day_option = new Option(i, i);
+                    select_day.options.add(select_day_option);
+                }
+            }
+        }
+
+
+
+    </script>
+   
+</body>
+</html>
